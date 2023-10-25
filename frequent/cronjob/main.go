@@ -19,7 +19,7 @@ func runCronJobs() {
 	s := gocron.NewScheduler(time.UTC)
 	i := 0
 	// 4
-	s.Every(100).Milliseconds().Do(func() {
+	s.Every(10000).Milliseconds().Do(func() {
 		hello("John Doe", i)
 		i++
 	})

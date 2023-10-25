@@ -1,32 +1,46 @@
 package main
 
 import (
+	"context"
+	"database/sql"
 	"fmt"
-	"sync"
+	_ "github.com/go-sql-driver/mysql"
+	"time"
 )
 
-var wg sync.WaitGroup
-
 func main() {
-	a := []string{"1", "2"}
-	if len(a) > 0 {
-		fmt.Println("len a lon hon 0")
+	// Thay đổi thông tin kết nối cho phù hợp với cấu hình MySQL của bạn
+	db, err := sql.Open("mysql", "root:123456@tcp(127.0.0.1:3306)/mydatabase")
+	if err != nil {
+		panic(err.Error())
 	}
-}
+	defer db.Close()
 
-func g1(a chan string) {
-	for i := 1; i <= 10; i++ {
-		fmt.Println("1 ", i)
+	// Kiểm tra kết nối
+	err = db.Ping()
+	if err != nil {
+		panic(err.Error())
 	}
-	a <- " 1 cai keo"
-	a <- "2 cai keo"
-	wg.Done()
-}
-
-func g2(a chan string) {
-	for i := 11; i <= 20; i++ {
-		fmt.Println("2", i)
+	fmt.Println("Kết nối thành công đến MySQL!")
+	// Thực hiện truy vấn để lấy dữ liệu từ bảng "user"
+	//inster
+	//start1 := time.Now()
+	////_, _ = db.ExecContext(context.Background(), "insert users set id = ?,name=?", 2, "data ")
+	//for i := 0; i < 10000; i++ {
+	//	_, _ = db.ExecContext(context.Background(), "insert users set id = ?,name=?", i, "data "+strconv.Itoa(i))
+	//	fmt.Println(i)
+	//	time.Sleep(time.Second / 10000)
+	//}
+	//fmt.Println(time.Since(start1))
+	start1 := time.Now()
+	for i := 0; i < 10000; i++ {
+		var id int64
+		var name string
+		_ = db.QueryRowContext(context.Background(), `select id, name
+		from users
+		where id = ?`, i).Scan(&id, &name)
+		fmt.Println(id, name)
+		time.Sleep(time.Second / 10000)
 	}
-	fmt.Println("ben 2", <-a)
-	wg.Done()
+	fmt.Println(time.Since(start1))
 }
