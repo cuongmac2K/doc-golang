@@ -11,9 +11,9 @@ func task() {
 }
 
 func main() {
-	ticker := time.Tick(1 * time.Minute / 6) // Thiết lập hàm chạy sau mỗi 6 giây
+	ticker := time.Tick(1 * time.Minute) // Thiết lập hàm chạy sau mỗi 6 giây
 
-	go func() {
+	func() {
 		for range ticker {
 			task() // Gọi hàm nhiệm vụ của bạn ở đây
 		}

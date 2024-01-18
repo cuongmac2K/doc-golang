@@ -7,13 +7,13 @@ import (
 )
 
 func main() {
-	//now := time.Now()
-	//processNom(100)
-	//fmt.Println("thoi gian chay", time.Since(now))
-
 	now := time.Now()
-	processChannel(100)
+	processNom(100)
 	fmt.Println("thoi gian chay", time.Since(now))
+
+	//now := time.Now()
+	//processChannel(100)
+	//fmt.Println("thoi gian chay", time.Since(now))
 }
 func processNom(number int) {
 	for i := 0; i < number; i++ {

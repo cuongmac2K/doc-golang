@@ -7,6 +7,7 @@ require (
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/go-sql-driver/mysql v1.7.1
 	github.com/gofiber/fiber/v2 v2.37.1
+	github.com/gorilla/mux v1.8.1
 	github.com/graphql-go/graphql v0.8.1
 	github.com/itrepablik/itrlog v1.0.3
 	github.com/itrepablik/sulat v1.0.7

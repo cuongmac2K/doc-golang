@@ -3,7 +3,7 @@ package main
 import "fmt"
 
 func main() {
-	haystack := "abc"
+	haystack := "avfvfbgbhnhnhnbc"
 	needle := "c"
 	fmt.Println(strStr(haystack, needle))
 }
