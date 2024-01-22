@@ -2,11 +2,19 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
+	"time"
 )
 
+func getFormattedDate() string {
+	currentTime := time.Now()
+	dateStr := currentTime.Format("02/01")
+	return dateStr
+}
 func main() {
+	fmt.Println(getFormattedDate())
 	http.HandleFunc("/api/test-post", getUser)
 	http.ListenAndServe(":4000", nil)
 }
