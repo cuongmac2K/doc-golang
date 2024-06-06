@@ -1,4 +1,4 @@
-package main
+package logger
 
 import (
 	"fmt"
@@ -40,7 +40,7 @@ func init() {
 
 	// Khởi tạo write syncer cho console và file
 	consoleSyncer := zapcore.Lock(os.Stdout)
-	fileSyncer := getFileWriterSyncer("/var/log/test.log") // Thay đổi đường dẫn tới file log của bạn ở đây
+	fileSyncer := getFileWriterSyncer("/var/log/test1.log") // Thay đổi đường dẫn tới file log của bạn ở đây
 
 	// Kết hợp các write syncer lại với nhau
 	multiWriteSyncer := zapcore.NewMultiWriteSyncer(consoleSyncer, fileSyncer)
@@ -79,7 +79,7 @@ func init() {
 	errorLogger = logger.Sugar()
 }
 
-// getFileWriterSyncer trả về một WriteSyncer để ghi log vào file
+// trả về một WriteSyncer để ghi log vào file
 func getFileWriterSyncer(filePath string) zapcore.WriteSyncer {
 	file, err := os.OpenFile(filePath, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
 	if err != nil {

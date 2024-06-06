@@ -6,7 +6,8 @@ import (
 )
 
 func main() {
-	produceMessage([]string{"10.3.52.78:9093"}, "logs", "xin chao xin chao")
+	produceMessage([]string{"10.3.52.78:9093"}, "devops-bizfly-activity-log-staging", "xin chao xin chao 2")
+	//produceMessage([]string{"10.3.52.78:9093"}, "devops-bizfly-activity-log-err-staging", "err chao xin chao")
 }
 
 func produceMessage(brokers []string, topic string, message string) error {

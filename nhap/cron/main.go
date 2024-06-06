@@ -1,79 +1,22 @@
 package main
 
-// Import thêm gói ioutil
 import (
-	"github.com/gorilla/mux"
-	"io/ioutil"
-	"log"
-	"net/http"
-	"os"
+	"fmt"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func main() {
-	r := mux.NewRouter()
+	// Giả sử đây là mật khẩu đã băm được lưu trữ trong cơ sở dữ liệu
+	hashedPassword := "$2a$10$IRn4n16aSCoC5jmDRvPLGuTVKt8ZXijRTYZrp7g9SMAEaow3f7cau"
 
-	r.HandleFunc("/writeLog", writeLogHandler).Methods("POST")
-	r.HandleFunc("/readLog", readLogHandler).Methods("GET")
+	// Mật khẩu người dùng nhập vào
+	inputPassword := "your_input_password"
 
-	logFile, err := os.OpenFile("app.log", os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
+	// So sánh mật khẩu nhập vào với mật khẩu đã băm
+	err := bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(inputPassword))
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println("Password does not match")
+	} else {
+		fmt.Println("Password matches")
 	}
-	defer logFile.Close()
-
-	log.SetOutput(logFile)
-
-	http.Handle("/", r)
-	log.Fatal(http.ListenAndServe(":3001", r))
-}
-
-func writeLogHandler(w http.ResponseWriter, r *http.Request) {
-	// Đọc dữ liệu từ request body
-	body, err := ioutil.ReadAll(r.Body)
-	if err != nil {
-		http.Error(w, "Failed to read request body", http.StatusBadRequest)
-		return
-	}
-	defer r.Body.Close()
-
-	// Ghi dữ liệu log từ request body vào file log "app1.log"
-	logFile, err := os.OpenFile("app1.log", os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
-	if err != nil {
-		http.Error(w, "Failed to open log file", http.StatusInternalServerError)
-		return
-	}
-	defer logFile.Close()
-
-	log.SetOutput(logFile)
-	logMessage := string(body)
-	log.Println(logMessage)
-
-	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("Log has been written to the file"))
-}
-
-func readLogHandler(w http.ResponseWriter, r *http.Request) {
-	// Đọc nội dung log từ tập tin và trả về cho client
-	logFile, err := os.Open("app1.log")
-	if err != nil {
-		http.Error(w, "Failed to read log file", http.StatusInternalServerError)
-		return
-	}
-	defer logFile.Close()
-
-	info, err := logFile.Stat()
-	if err != nil {
-		http.Error(w, "Failed to read log file", http.StatusInternalServerError)
-		return
-	}
-
-	data := make([]byte, info.Size())
-	_, err = logFile.Read(data)
-	if err != nil {
-		http.Error(w, "Failed to read log file", http.StatusInternalServerError)
-		return
-	}
-
-	w.WriteHeader(http.StatusOK)
-	w.Write(data)
 }

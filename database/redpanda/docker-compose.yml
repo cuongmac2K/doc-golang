@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  redpanda:
+    image: vectorized/redpanda:v21.10.4
+    ports:
+      - "8080:8080"  # Port Kafka
+      - "9644:9644"  # Port Admin API
+    volumes:
+      - ./data:/var/lib/redpanda/data  # Mount volume for data storage
+    environment:
+      - REDPANDA_ADVERTISED_HOST_NAME=redpanda  # Hostname for container
+      - REDPANDA_BROKER_ID=1  # Broker ID
+      - REDPANDA_NUM_PARTITIONS=3  # Number of partitions

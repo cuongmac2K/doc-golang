@@ -5,7 +5,7 @@ import (
 )
 
 func main() {
-	num := 13
+	num := 12
 	fmt.Println(intToRoman(num))
 }
 

@@ -16,7 +16,7 @@ func main() {
 	//}
 	var wg sync.WaitGroup
 	{
-		for i := 0; i < 20; i++ {
+		for i := 0; i < 30; i++ {
 			wg.Add(1)
 			defer wg.Done()
 			_ = sentry.Init(sentry.ClientOptions{
@@ -28,7 +28,7 @@ func main() {
 			})
 			go func() {
 				for i := 0; i < 100000; i++ {
-					sentry.CaptureException(errors.New(fmt.Sprintf("my error11 %s", i)))
+					sentry.CaptureException(errors.New(fmt.Sprintf("3my error11 %s", i)))
 					time.Sleep(time.Second)
 				}
 			}()

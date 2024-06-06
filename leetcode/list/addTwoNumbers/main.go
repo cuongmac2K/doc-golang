@@ -14,7 +14,7 @@ func main() {
 		},
 	}
 	b := ListNode{
-		Val: 1,
+		Val: 6,
 		Next: &ListNode{
 			Val: 3,
 			Next: &ListNode{
@@ -23,7 +23,7 @@ func main() {
 			},
 		},
 	}
-	x := mergeTwoLists(&a, &b)
+	x := addTwoNumbers(&a, &b)
 	x.show()
 
 }
@@ -40,19 +40,19 @@ type ListNode struct {
 	Next *ListNode
 }
 
-func mergeTwoLists(list1 *ListNode, list2 *ListNode) *ListNode {
-	newHead := &ListNode{}
-	cur := newHead
-	for list1 != nil || list2 != nil {
-		if (list1 != nil && list2 != nil && list1.Val <= list2.Val) || list2 == nil {
-			cur.Next = list1
-			list1 = list1.Next
-		} else if list2 != nil {
-			cur.Next = list2
-			list2 = list2.Next
+func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
+	carry, dummy := 0, new(ListNode)
+	for node := dummy; l1 != nil || l2 != nil || carry > 0; node = node.Next {
+		if l1 != nil {
+			carry += l1.Val
+			l1 = l1.Next
 		}
-		cur = cur.Next
+		if l2 != nil {
+			carry += l2.Val
+			l2 = l2.Next
+		}
+		node.Next = &ListNode{carry % 10, nil}
+		carry /= 10
 	}
-
-	return newHead.Next
+	return dummy.Next
 }

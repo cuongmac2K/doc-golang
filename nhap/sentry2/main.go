@@ -10,10 +10,6 @@ import (
 
 func main() {
 
-	//for i := 0; i < 1000; i++ {
-	//	sentry.CaptureException(errors.New("1my error"))
-	//	time.Sleep(time.Second / 10)
-	//}
 	var wg sync.WaitGroup
 	{
 		for i := 0; i < 20; i++ {
@@ -21,14 +17,11 @@ func main() {
 			defer wg.Done()
 			_ = sentry.Init(sentry.ClientOptions{
 				Debug: true,
-				//Dsn:   "https://ea001c39b67a49b5b8df1f20df80d98e@sentry.paas.vn/316",
-				Dsn: "http://fda3943a6f97bd530abd63b16d724df4@10.3.54.229:9000/2",
-				//Dsn: "https://833df11a7bad43908723ae6fb36e4518:9601c2ed2d7f443ebf1f049ef2504f24@sentry.paas.vn/317",
-				//Dsn: "https://sentry.paas.vn/api/hooks/release/builtin/317/2e9b295007bc1005fae3bb862054a59c64fc7ffa038350f3729a0ea7421d097b",
+				Dsn:   "http://2c95a1e4c38e6b12128bcb2515be95bc@10.3.55.219:9000/2",
 			})
 			go func() {
-				for i := 0; i < 100000; i++ {
-					sentry.CaptureException(errors.New(fmt.Sprintf("my error11 %s", i)))
+				for i := 0; i < 10000; i++ {
+					sentry.CaptureException(errors.New(fmt.Sprintf("2my error11 %s", i)))
 					time.Sleep(time.Second)
 				}
 			}()

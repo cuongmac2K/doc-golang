@@ -11,18 +11,56 @@ github.com/ClickHouse/clickhouse-go/lib/types
 # github.com/IBM/sarama v1.40.0
 ## explicit; go 1.17
 github.com/IBM/sarama
-# github.com/andybalholm/brotli v1.0.4
+# github.com/TheZeroSlave/zapsentry v1.23.0
+## explicit; go 1.17
+github.com/TheZeroSlave/zapsentry
+# github.com/andybalholm/brotli v1.0.5
 ## explicit; go 1.12
 github.com/andybalholm/brotli
+# github.com/apache/arrow/go/arrow v0.0.0-20211112161151-bc219186db40
+## explicit; go 1.15
+github.com/apache/arrow/go/arrow
+github.com/apache/arrow/go/arrow/array
+github.com/apache/arrow/go/arrow/bitutil
+github.com/apache/arrow/go/arrow/decimal128
+github.com/apache/arrow/go/arrow/endian
+github.com/apache/arrow/go/arrow/float16
+github.com/apache/arrow/go/arrow/internal/cpu
+github.com/apache/arrow/go/arrow/internal/debug
+github.com/apache/arrow/go/arrow/memory
+github.com/apache/arrow/go/arrow/memory/internal/cgoalloc
+github.com/apache/arrow/go/arrow/tensor
+# github.com/armon/go-radix v1.0.0
+## explicit
+github.com/armon/go-radix
+# github.com/awalterschulze/gographviz v2.0.3+incompatible
+## explicit
+github.com/awalterschulze/gographviz
+github.com/awalterschulze/gographviz/ast
+github.com/awalterschulze/gographviz/internal/errors
+github.com/awalterschulze/gographviz/internal/lexer
+github.com/awalterschulze/gographviz/internal/parser
+github.com/awalterschulze/gographviz/internal/token
+# github.com/bmizerany/assert v0.0.0-20160611221934-b7ed37b82869
+## explicit
 # github.com/cespare/xxhash/v2 v2.2.0
 ## explicit; go 1.11
 github.com/cespare/xxhash/v2
+# github.com/chewxy/hm v1.0.0
+## explicit
+github.com/chewxy/hm
+# github.com/chewxy/math32 v1.10.1
+## explicit; go 1.13
+github.com/chewxy/math32
 # github.com/cloudflare/golz4 v0.0.0-20150217214814-ef862a3cdc58
 ## explicit
 github.com/cloudflare/golz4
 # github.com/davecgh/go-spew v1.1.1
 ## explicit
 github.com/davecgh/go-spew/spew
+# github.com/dgrijalva/jwt-go v3.2.0+incompatible
+## explicit
+github.com/dgrijalva/jwt-go
 # github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f
 ## explicit
 github.com/dgryski/go-rendezvous
@@ -38,6 +76,30 @@ github.com/eapache/go-xerial-snappy
 # github.com/eapache/queue v1.1.0
 ## explicit
 github.com/eapache/queue
+# github.com/elastic/go-sysinfo v1.7.1
+## explicit; go 1.13
+github.com/elastic/go-sysinfo
+github.com/elastic/go-sysinfo/internal/registry
+github.com/elastic/go-sysinfo/providers/aix
+github.com/elastic/go-sysinfo/providers/darwin
+github.com/elastic/go-sysinfo/providers/linux
+github.com/elastic/go-sysinfo/providers/shared
+github.com/elastic/go-sysinfo/providers/windows
+github.com/elastic/go-sysinfo/types
+# github.com/elastic/go-windows v1.0.0
+## explicit
+github.com/elastic/go-windows
+# github.com/fluent/fluent-logger-golang v1.9.0
+## explicit
+github.com/fluent/fluent-logger-golang/fluent
+# github.com/getsentry/sentry-go v0.27.0
+## explicit; go 1.18
+github.com/getsentry/sentry-go
+github.com/getsentry/sentry-go/internal/debug
+github.com/getsentry/sentry-go/internal/otel/baggage
+github.com/getsentry/sentry-go/internal/otel/baggage/internal/baggage
+github.com/getsentry/sentry-go/internal/ratelimit
+github.com/getsentry/sentry-go/internal/traceparser
 # github.com/go-co-op/gocron v1.18.0
 ## explicit; go 1.19
 github.com/go-co-op/gocron
@@ -66,11 +128,23 @@ github.com/gofiber/fiber/v2/internal/msgp
 github.com/gofiber/fiber/v2/internal/schema
 github.com/gofiber/fiber/v2/internal/uuid
 github.com/gofiber/fiber/v2/utils
+# github.com/gogo/protobuf v1.3.2
+## explicit; go 1.15
+github.com/gogo/protobuf/gogoproto
+github.com/gogo/protobuf/proto
+github.com/gogo/protobuf/protoc-gen-gogo/descriptor
+# github.com/golang/protobuf v1.5.2
+## explicit; go 1.9
+github.com/golang/protobuf/proto
 # github.com/golang/snappy v0.0.4
 ## explicit
 github.com/golang/snappy
-# github.com/google/go-cmp v0.5.9
-## explicit; go 1.13
+# github.com/google/flatbuffers v2.0.6+incompatible
+## explicit
+github.com/google/flatbuffers/go
+# github.com/google/uuid v1.6.0
+## explicit
+github.com/google/uuid
 # github.com/gorilla/mux v1.8.1
 ## explicit; go 1.20
 github.com/gorilla/mux
@@ -184,8 +258,11 @@ github.com/jcmturner/gokrb5/v8/types
 ## explicit; go 1.13
 github.com/jcmturner/rpc/v2/mstypes
 github.com/jcmturner/rpc/v2/ndr
-# github.com/klauspost/compress v1.15.14
-## explicit; go 1.17
+# github.com/joeshaw/multierror v0.0.0-20140124173710-69b34d4ec901
+## explicit
+github.com/joeshaw/multierror
+# github.com/klauspost/compress v1.16.0
+## explicit; go 1.18
 github.com/klauspost/compress
 github.com/klauspost/compress/flate
 github.com/klauspost/compress/fse
@@ -196,6 +273,11 @@ github.com/klauspost/compress/internal/snapref
 github.com/klauspost/compress/zlib
 github.com/klauspost/compress/zstd
 github.com/klauspost/compress/zstd/internal/xxhash
+# github.com/kr/text v0.2.0
+## explicit
+# github.com/leesper/go_rng v0.0.0-20190531154944-a612b043e353
+## explicit
+github.com/leesper/go_rng
 # github.com/lib/pq v1.10.9
 ## explicit; go 1.13
 github.com/lib/pq
@@ -204,6 +286,9 @@ github.com/lib/pq/scram
 # github.com/montanaflynn/stats v0.0.0-20171201202039-1bf9dbcd8cbe
 ## explicit
 github.com/montanaflynn/stats
+# github.com/philhofer/fwd v1.1.2
+## explicit; go 1.15
+github.com/philhofer/fwd
 # github.com/pierrec/lz4/v4 v4.1.17
 ## explicit; go 1.14
 github.com/pierrec/lz4/v4
@@ -211,9 +296,15 @@ github.com/pierrec/lz4/v4/internal/lz4block
 github.com/pierrec/lz4/v4/internal/lz4errors
 github.com/pierrec/lz4/v4/internal/lz4stream
 github.com/pierrec/lz4/v4/internal/xxh32
+# github.com/pkg/errors v0.9.1
+## explicit
+github.com/pkg/errors
 # github.com/pmezard/go-difflib v1.0.0
 ## explicit
 github.com/pmezard/go-difflib/difflib
+# github.com/prometheus/procfs v0.0.0-20190425082905-87a4384529e0
+## explicit
+github.com/prometheus/procfs
 # github.com/rabbitmq/amqp091-go v1.5.0
 ## explicit; go 1.16
 github.com/rabbitmq/amqp091-go
@@ -232,9 +323,12 @@ github.com/sendgrid/rest
 ## explicit
 github.com/sendgrid/sendgrid-go
 github.com/sendgrid/sendgrid-go/helpers/mail
-# github.com/stretchr/testify v1.8.1
-## explicit; go 1.13
+# github.com/stretchr/testify v1.8.4
+## explicit; go 1.20
 github.com/stretchr/testify/assert
+# github.com/tinylib/msgp v1.1.9
+## explicit; go 1.18
+github.com/tinylib/msgp/msgp
 # github.com/valyala/bytebufferpool v1.0.0
 ## explicit
 github.com/valyala/bytebufferpool
@@ -256,9 +350,35 @@ github.com/xdg-go/scram
 # github.com/xdg-go/stringprep v1.0.4
 ## explicit; go 1.11
 github.com/xdg-go/stringprep
+# github.com/xtgo/set v1.0.0
+## explicit
+github.com/xtgo/set
 # github.com/youmark/pkcs8 v0.0.0-20181117223130-1be2e3e5546d
 ## explicit
 github.com/youmark/pkcs8
+# go.elastic.co/apm/module/apmzap/v2 v2.6.0
+## explicit; go 1.21
+go.elastic.co/apm/module/apmzap/v2
+# go.elastic.co/apm/v2 v2.6.0
+## explicit; go 1.21
+go.elastic.co/apm/v2
+go.elastic.co/apm/v2/apmconfig
+go.elastic.co/apm/v2/internal/apmcloudutil
+go.elastic.co/apm/v2/internal/apmhostutil
+go.elastic.co/apm/v2/internal/apmhttputil
+go.elastic.co/apm/v2/internal/apmlog
+go.elastic.co/apm/v2/internal/apmstrings
+go.elastic.co/apm/v2/internal/apmversion
+go.elastic.co/apm/v2/internal/configutil
+go.elastic.co/apm/v2/internal/iochan
+go.elastic.co/apm/v2/internal/ringbuffer
+go.elastic.co/apm/v2/internal/wildcard
+go.elastic.co/apm/v2/model
+go.elastic.co/apm/v2/stacktrace
+go.elastic.co/apm/v2/transport
+# go.elastic.co/fastjson v1.1.0
+## explicit; go 1.14
+go.elastic.co/fastjson
 # go.mongodb.org/mongo-driver v1.13.1
 ## explicit; go 1.13
 go.mongodb.org/mongo-driver/bson
@@ -308,20 +428,24 @@ go.mongodb.org/mongo-driver/x/mongo/driver/operation
 go.mongodb.org/mongo-driver/x/mongo/driver/session
 go.mongodb.org/mongo-driver/x/mongo/driver/topology
 go.mongodb.org/mongo-driver/x/mongo/driver/wiremessage
-# go.uber.org/atomic v1.6.0
+# go.uber.org/atomic v1.7.0
 ## explicit; go 1.13
 go.uber.org/atomic
-# go.uber.org/multierr v1.5.0
+# go.uber.org/multierr v1.6.0
 ## explicit; go 1.12
 go.uber.org/multierr
-# go.uber.org/zap v1.14.1
-## explicit; go 1.13
+# go.uber.org/zap v1.24.0
+## explicit; go 1.19
 go.uber.org/zap
 go.uber.org/zap/buffer
+go.uber.org/zap/internal
 go.uber.org/zap/internal/bufferpool
 go.uber.org/zap/internal/color
 go.uber.org/zap/internal/exit
 go.uber.org/zap/zapcore
+# go4.org/unsafe/assume-no-moving-gc v0.0.0-20220617031537-928513b29760
+## explicit; go 1.11
+go4.org/unsafe/assume-no-moving-gc
 # golang.org/x/crypto v0.14.0
 ## explicit; go 1.17
 golang.org/x/crypto/bcrypt
@@ -341,8 +465,10 @@ golang.org/x/sync/semaphore
 golang.org/x/sync/singleflight
 # golang.org/x/sys v0.13.0
 ## explicit; go 1.17
+golang.org/x/sys/execabs
 golang.org/x/sys/unix
 golang.org/x/sys/windows
+golang.org/x/sys/windows/registry
 # golang.org/x/text v0.13.0
 ## explicit; go 1.17
 golang.org/x/text/cases
@@ -358,6 +484,64 @@ golang.org/x/text/transform
 golang.org/x/text/unicode/bidi
 golang.org/x/text/unicode/norm
 golang.org/x/text/width
+# golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2
+## explicit; go 1.17
+golang.org/x/xerrors
+golang.org/x/xerrors/internal
+# gonum.org/v1/gonum v0.11.0
+## explicit; go 1.17
+gonum.org/v1/gonum/blas
+gonum.org/v1/gonum/blas/blas64
+gonum.org/v1/gonum/blas/cblas128
+gonum.org/v1/gonum/blas/gonum
+gonum.org/v1/gonum/floats
+gonum.org/v1/gonum/floats/scalar
+gonum.org/v1/gonum/graph
+gonum.org/v1/gonum/graph/internal/linear
+gonum.org/v1/gonum/graph/internal/ordered
+gonum.org/v1/gonum/graph/internal/set
+gonum.org/v1/gonum/graph/iterator
+gonum.org/v1/gonum/graph/topo
+gonum.org/v1/gonum/graph/traverse
+gonum.org/v1/gonum/internal/asm/c128
+gonum.org/v1/gonum/internal/asm/c64
+gonum.org/v1/gonum/internal/asm/f32
+gonum.org/v1/gonum/internal/asm/f64
+gonum.org/v1/gonum/internal/cmplx64
+gonum.org/v1/gonum/internal/math32
+gonum.org/v1/gonum/lapack
+gonum.org/v1/gonum/lapack/gonum
+gonum.org/v1/gonum/lapack/lapack64
+gonum.org/v1/gonum/mat
+# google.golang.org/protobuf v1.29.1
+## explicit; go 1.11
+google.golang.org/protobuf/encoding/prototext
+google.golang.org/protobuf/encoding/protowire
+google.golang.org/protobuf/internal/descfmt
+google.golang.org/protobuf/internal/descopts
+google.golang.org/protobuf/internal/detrand
+google.golang.org/protobuf/internal/encoding/defval
+google.golang.org/protobuf/internal/encoding/messageset
+google.golang.org/protobuf/internal/encoding/tag
+google.golang.org/protobuf/internal/encoding/text
+google.golang.org/protobuf/internal/errors
+google.golang.org/protobuf/internal/filedesc
+google.golang.org/protobuf/internal/filetype
+google.golang.org/protobuf/internal/flags
+google.golang.org/protobuf/internal/genid
+google.golang.org/protobuf/internal/impl
+google.golang.org/protobuf/internal/order
+google.golang.org/protobuf/internal/pragma
+google.golang.org/protobuf/internal/set
+google.golang.org/protobuf/internal/strs
+google.golang.org/protobuf/internal/version
+google.golang.org/protobuf/proto
+google.golang.org/protobuf/reflect/protodesc
+google.golang.org/protobuf/reflect/protoreflect
+google.golang.org/protobuf/reflect/protoregistry
+google.golang.org/protobuf/runtime/protoiface
+google.golang.org/protobuf/runtime/protoimpl
+google.golang.org/protobuf/types/descriptorpb
 # gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc
 ## explicit
 gopkg.in/alexcesaro/quotedprintable.v3
@@ -367,3 +551,32 @@ gopkg.in/yaml.v2
 # gopkg.in/yaml.v3 v3.0.1
 ## explicit
 gopkg.in/yaml.v3
+# gorgonia.org/cu v0.9.4
+## explicit; go 1.13
+gorgonia.org/cu
+gorgonia.org/cu/blas
+gorgonia.org/cu/dnn
+# gorgonia.org/dawson v1.2.0
+## explicit
+gorgonia.org/dawson
+# gorgonia.org/gorgonia v0.9.18
+## explicit; go 1.16
+gorgonia.org/gorgonia
+gorgonia.org/gorgonia/cuda
+gorgonia.org/gorgonia/internal/encoding
+# gorgonia.org/tensor v0.9.24
+## explicit; go 1.18
+gorgonia.org/tensor
+gorgonia.org/tensor/internal/execution
+gorgonia.org/tensor/internal/serialization/fb
+gorgonia.org/tensor/internal/serialization/pb
+gorgonia.org/tensor/internal/storage
+# gorgonia.org/vecf32 v0.9.0
+## explicit; go 1.13
+gorgonia.org/vecf32
+# gorgonia.org/vecf64 v0.9.0
+## explicit; go 1.13
+gorgonia.org/vecf64
+# howett.net/plist v0.0.0-20181124034731-591f970eefbb
+## explicit
+howett.net/plist

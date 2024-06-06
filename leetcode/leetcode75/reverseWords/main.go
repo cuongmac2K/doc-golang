@@ -9,12 +9,12 @@ import (
 func main() {
 	s := "the sky is blue"
 	s = "  hello   world  "
-	fmt.Println(s)
+	s = "  t"
 	fmt.Println(reverseWords(s))
 }
 func reverseWords(s string) string {
 	s = strings.TrimSpace(s)
-	arr := strings.Split(s, " ")
+	arr := strings.Fields(s)
 	n := len(arr)
 	if n == 0 || n == 1 {
 		return s

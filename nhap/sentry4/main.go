@@ -28,7 +28,7 @@ func main() {
 			})
 			go func() {
 				for i := 0; i < 100000; i++ {
-					sentry.CaptureException(errors.New(fmt.Sprintf("3my error11 %s", i)))
+					sentry.CaptureException(errors.New(fmt.Sprintf("4my error11 %s", i)))
 					time.Sleep(time.Second)
 				}
 			}()

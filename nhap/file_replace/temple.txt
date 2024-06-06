@@ -1,0 +1,15 @@
+[INPUT]
+    Name        tail
+    Path        {path_file_log}
+
+[OUTPUT]
+    Name        http
+    Match       *
+    Host        Config_host_activity
+    Port        Config_port_activity
+    Format      json_lines
+    Header      X-Activity-Token Config_Activity_Token
+    Header      Project-Id Config_Project_id
+    Header      Uuid Config_Uuid
+    URI         /logs/create
+    Workers     1

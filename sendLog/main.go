@@ -4,20 +4,21 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 )
 
 func main() {
-	file, err := os.OpenFile("/var/log/test.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	file, err := os.OpenFile("/var/log/test1.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	defer file.Close()
 	logger := log.New(file, "", log.LstdFlags)
 
-	for i := 0; i < 2000; i++ {
+	for i := 0; i < 2; i++ {
 		if err != nil {
 			log.Fatal(err)
 		}
-		logger.Println("[abc@gmail.com]-[tcqshinns-MacBook-Pro]-[syslogd[115]: ASL Sender Statistics]-[10.3.251.144]-[Ha-Noi]")
+		logger.Println("chau len ba chau di co giao ")
 
-		//time.Sleep(time.Millisecond / 2)
+		time.Sleep(time.Second / 2)
 		//file1, err := os.OpenFile("/var/log/test1.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 		//if err != nil {
 		//	log.Fatal(err

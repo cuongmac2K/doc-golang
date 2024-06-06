@@ -1,7 +1,27 @@
 package main
 
-func main() {
+import "fmt"
 
+func main() {
+	b := ListNode{
+		Val: 1,
+		Next: &ListNode{
+			Val: 7,
+			Next: &ListNode{
+				Val:  4,
+				Next: nil,
+			},
+		},
+	}
+	a := sortList(&b)
+	a.show()
+}
+func (l *ListNode) show() {
+	fmt.Println(l.Val)
+	for l.Next != nil {
+		l = l.Next
+		fmt.Println(l.Val)
+	}
 }
 
 type ListNode struct {

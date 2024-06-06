@@ -4,7 +4,7 @@ import "fmt"
 
 func main() {
 	haystack := "avfvfbgbhnhnhnbc"
-	needle := "c"
+	needle := "vfv"
 	fmt.Println(strStr(haystack, needle))
 }
 func strStr(haystack string, needle string) int {

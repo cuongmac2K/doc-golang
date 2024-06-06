@@ -2,18 +2,14 @@ package main
 
 import (
 	"context"
-	"crypto/sha1"
-	postges_connect "doc/database/kafka/postges-connect"
-	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"github.com/IBM/sarama"
-	"github.com/jackc/pgx/v4"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
-	"strconv"
+	"strings"
 	"sync"
 	"syscall"
 	"time"
@@ -64,32 +60,12 @@ func (c *Consumer) ConsumeClaim(session sarama.ConsumerGroupSession, claim saram
 				//transaction.End()
 				return nil
 			} else {
-				dataSend := map[string]interface{}{}
-				json.Unmarshal(message.Value, &dataSend)
-				fmt.Println(dataSend)
-				var logs []LogData
-				byteLog, _ := json.Marshal(dataSend["ArrLogs"])
-				_ = json.Unmarshal(byteLog, &logs)
-				fmt.Println("log ", logs)
-				arrlogEntry := []LogsInsert{}
-				for _, i := range logs {
-					id := strconv.Itoa(time.Now().UTC().Nanosecond())
-					hash := sha1.Sum([]byte(id))
-					uuid := hex.EncodeToString(hash[:])
-					logEntry := LogsInsert{
-						ID:         id,
-						UUID:       uuid,
-						Agent_UUID: dataSend["AgentUuid"].(string),
-						Data:       i.Log,
-						Created_At: time.Now().UTC(),
-					}
-					arrlogEntry = append(arrlogEntry, logEntry)
+				fmt.Println(message)
+				fmt.Println(string(message.Value))
+				if strings.Contains(string(message.Value), "err") {
+					//	produceMessage([]string{"10.3.52.78:9093"}, "devops-bizfly-activity-log-err-staging", message.Value)
 				}
-				err := InsertMany(context.Background(), postges_connect.Postgres, "logs", arrlogEntry)
-				time.Sleep(time.Millisecond / 2)
-				if err != nil {
-					fmt.Println("", err)
-				}
+				//session.MarkMessage(message, "")
 			}
 		case <-session.Context().Done():
 			return nil
@@ -110,8 +86,8 @@ func toggleConsumptionFlow(client sarama.ConsumerGroup, isPaused *bool) {
 }
 
 func main() {
-	err := postges_connect.GetDBConnection()
-	topic := "logs"
+	topic := "devops-bizfly-activity-log-staging"
+	topic1 := "devops-bizfly-activity-log-err-staging"
 	brokers := []string{"10.3.52.78:9093"}
 
 	kafkaConfig := sarama.NewConfig()
@@ -141,7 +117,7 @@ func main() {
 	go func() {
 		defer wg.Done()
 		for {
-			if err := consumerGroup.Consume(ctx, []string{topic}, &consumer); err != nil {
+			if err := consumerGroup.Consume(ctx, []string{topic, topic1}, &consumer); err != nil {
 				if err == sarama.ErrClosedConsumerGroup {
 					return
 				}
@@ -181,32 +157,30 @@ func main() {
 	<-time.After(10 * time.Second)
 	log.Println("Shutdown complete")
 }
+func produceMessage(brokers []string, topic string, message []byte) error {
+	producerConfig := sarama.NewConfig()
+	producerConfig.Version = sarama.V2_1_0_0
+	producerConfig.Net.SASL.Enable = true
+	producerConfig.Net.SASL.User = "admin"
+	producerConfig.Net.SASL.Password = "admin-secret"
+	producerConfig.Net.SASL.Handshake = true
+	producerConfig.Net.TLS.Enable = false
+	producerConfig.Producer.Return.Successes = true
+	producer, err := sarama.NewSyncProducer(brokers, producerConfig)
+	if err != nil {
+		return fmt.Errorf("failed to create producer: %w", err)
+	}
+	defer producer.Close()
 
-func InsertMany(ctx context.Context, conn *pgx.Conn, tableName string, logs []LogsInsert) error {
-	// Tạo một transaction
-	tx, err := conn.Begin(ctx)
-	if err != nil {
-		return err
+	msg := &sarama.ProducerMessage{
+		Topic: topic,
+		Value: sarama.StringEncoder(message),
 	}
-	defer tx.Rollback(ctx)
 
-	// Chuẩn bị câu lệnh INSERT
-	stmtName := fmt.Sprintf("insert_statement_%s", tableName)
-	_, err = tx.Prepare(ctx, stmtName, fmt.Sprintf("INSERT INTO %s (id, uuid,agent_uuid,data,created_at) VALUES ($1, $2, $3, $4, $5)", tableName))
+	_, _, err = producer.SendMessage(msg)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to send message: %w", err)
 	}
-	// Chèn từng dòng vào PostgreSQL
-	for _, log := range logs {
-		_, err := conn.Exec(ctx, stmtName, log.ID, log.UUID, log.Agent_UUID, log.Data, log.Created_At)
-		if err != nil {
-			return err
-		}
-	}
-	// Commit transaction
-	err = tx.Commit(ctx)
-	if err != nil {
-		return err
-	}
+
 	return nil
 }
