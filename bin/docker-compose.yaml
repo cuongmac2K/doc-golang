@@ -1,0 +1,17 @@
+version: '2.1'
+services:
+  qryn:
+    image: qxip/qryn:latest
+    container_name: loki
+    restart: unless-stopped
+    expose:
+      - 3100
+    ports:
+      - "3100:3100"
+    environment:
+      - CLICKHOUSE_SERVER=10.3.53.206
+      - CLICKHOUSE_AUTH=default:admin
+      - CLICKHOUSE_DB=qryn2
+      - CLUSTER_NAME=cluster_production
+      - DEBUG=true
+    network_mode: "host"
