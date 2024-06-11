@@ -1,30 +1,31 @@
 package main
 
-import "slices"
+import (
+	"fmt"
+	"regexp"
+)
 
 func main() {
-
-}
-
-func merge(intervals [][]int) [][]int {
-	if len(intervals) < 2 {
-		return intervals
+	// Compile the regex with a negative lookahead assertion
+	regex, err := regexp.CompilePOSIX(`^(?!\/\.)[A-Za-z0-9_.@]{1,255}$`)
+	if err != nil {
+		fmt.Println("Error compiling regex:", err)
+		return
 	}
 
-	slices.SortFunc(intervals, func(a, b []int) int {
-		return a[0] - b[0]
-	})
+	testStrings := []string{
+		"validString_1@example.com",
+		"/.invalidStart",
+		"another.valid_string@domain.com",
+		"invalid/string",
+		"valid_string@example.com",
+	}
 
-	for i := 1; i < len(intervals); i++ {
-		prev := intervals[i-1]
-		cur := intervals[i]
-
-		if prev[1] >= cur[0] {
-			intervals[i] = []int{prev[0], max(prev[1], cur[1])}
-			intervals = append(intervals[:i-1], intervals[i:]...)
-			i--
+	for _, str := range testStrings {
+		if regex.MatchString(str) {
+			fmt.Printf("Matched: %s\n", str)
+		} else {
+			fmt.Printf("Did not match: %s\n", str)
 		}
 	}
-
-	return intervals
 }

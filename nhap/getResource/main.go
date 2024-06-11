@@ -16,8 +16,8 @@ import (
 
 func main() {
 	a := time.Now()
-	b := getValueResouce("https://hn-staging2.bizflycloud.vn/api/iaas-cloud/firewalls/2a0ce5b9-b05b-4741-a547-68eaa8d738dd",
-		"PATCH", "98f5e866-ce84-41d8-b09c-d883a86e96c0")
+	b := getValueResouce("https://hn-staging2.bizflycloud.vn/api/iaas-cloud/volume-types",
+		"GET", "98f5e866-ce84-41d8-b09c-d883a86e96c0")
 	//b := getValueResouce("https://hn-staging2.bizflycloud.vn/api/kubernetes-engine/_/b8sm4tbo4lg2frb2", "Get")
 	//b := getValueResouce("https://staging.bizflycloud.vn/api/al/visualize/explore/b0120bb8-ae50-4cbd-aab7-65835ec0fbd2?schemaVersion=1&panes=%20%20%20%20%20%20%7B%22mig%22:%7B%22datasource%22:%22f9301251-dd7e-4509-84b4-b1e2809e52b7%22,%22queries%22:%5B%7B%22refId%22:%22A%22,%22expr%22:%22%7B%20%20%20%20%20%20project_uuid%3D%5C%22b0120bb8-ae50-4cbd-aab7-65835ec0fbd2%5C%22%7D%20%7C%3D%20%60%60%22,%22queryType%22:%22range%22,%22datasource%22:%7B%22type%22:%22loki%22,%22uid%22:%22f9301251-dd7e-4509-84b4-b1e2809e52b7%22%7D,%22editorMode%22:%22builder%22%7D%5D,%22range%22:%7B%22from%22:%22now-1h%22,%22to%22:%22now%22%7D%7D%7D&orgId=1", "Get")
 	fmt.Println(b)
@@ -43,34 +43,62 @@ func getValueResouce(resource string, method, service string) string {
 	}
 	for _, v := range res1 {
 		if strings.ToUpper(v.Type) == strings.ToUpper(method) {
-			if len(v.Patterns) > 0 {
+			if len(v.Patterns) == 1 {
 				s := resource
-				for _, i := range v.Patterns {
-					re := regexp.MustCompile(i)
+				switch {
+				case v.Patterns[0] == "[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}":
+					re := regexp.MustCompile(v.Patterns[0])
 
 					// Thay thế tất cả các chuỗi khớp với regex bằng dấu *
 					result := re.ReplaceAllString(s, "*")
 					//fmt.Println("reslut sau khi thay *: ", result)
-					//
+
 					if strings.Contains(result, v.Url) {
 						//return v.Endpoint
 						fmt.Println("url ", v.Url)
 						fmt.Println("enpoint ", v.Endpoint)
 						//fmt.Println("record ", v)
-						break
+						return v.Endpoint
+						//break
 					}
+					break
+				case strings.Contains(v.Patterns[0], "(.*?)"):
+					if checkPattern(v.Patterns[0], resource) {
+						return v.Endpoint
+					}
+					break
+				case v.Patterns[0] == "(?!\\/.)[A-Za-z0-9_.@]{1,255}$":
+				default:
+
 				}
 
 			}
+		}
+		if len(v.Patterns) == 0 {
 			if strings.Contains(resource, v.Url) {
 				//return v.Endpoint
 				fmt.Println(" out url ", v.Url)
 				fmt.Println("out record ", v)
 			}
-
 		}
+		if len(v.Patterns) > 1 {
+			for _, i := range v.Patterns {
+				if
+			}
+		}
+
 	}
 	return ""
+}
+
+func checkPattern(pattern, resource string) bool {
+	pattern += ".*" + pattern
+	re := regexp.MustCompile(pattern)
+	if re.MatchString(resource) {
+		return true
+	} else {
+		return false
+	}
 }
 
 type dataResource struct {
