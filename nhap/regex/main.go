@@ -2,23 +2,44 @@ package main
 
 import (
 	"fmt"
-	"regexp"
+	"sort"
 )
 
+// Định nghĩa struct dataResource
+type dataResource struct {
+	Patterns []string `json:"patterns"`
+	Type     string   `json:"type"`
+	Endpoint string   `json:"endpoint"`
+	Url      string   `json:"url"`
+}
+
+// Hàm để sắp xếp mảng dataResource dựa trên độ dài của Url
+func sortDataResourcesByUrlLength(resources []dataResource) {
+	sort.Slice(resources, func(i, j int) bool {
+		return len(resources[i].Url) > len(resources[j].Url)
+	})
+}
+
 func main() {
-	// Định nghĩa regex pattern
-	//pattern := `[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}`
-	pattern := `(?!\/.)[A-Za-z0-9_.@]{1,255}$`
+	// Tạo một số ví dụ về dataResource
+	resources := []dataResource{
+		{Url: "https://example.com/very/long/url"},
+		{Url: "https://short.com"},
+		{Url: "https://medium.com/some/path"},
+	}
 
-	// Chuỗi mẫu để kiểm tra
-	//text := "Example UUID: 2a0ce5b9-b05b-4741-a547-68eaa8d738dd and another UUID: b0120bb8-ae50-4cbd-aab7-65835ec0fbd2 b0120bb8-ae50-4cbd-aab7-65835ec0fbd2123e4567-e89b-12d3-a456-426614174000."
-	text := "john.doe@domain.com"
-	// Compile regex
-	re := regexp.MustCompile(pattern)
+	// In ra trước khi sắp xếp
+	fmt.Println("Before sorting:")
+	for _, resource := range resources {
+		fmt.Println(resource.Url)
+	}
 
-	// Thay thế tất cả các chuỗi khớp với regex bằng dấu *
-	result := re.ReplaceAllString(text, "*")
+	// Sắp xếp mảng dựa trên độ dài của Url
+	sortDataResourcesByUrlLength(resources)
 
-	// In kết quả
-	fmt.Println(result)
+	// In ra sau khi sắp xếp
+	fmt.Println("After sorting:")
+	for _, resource := range resources {
+		fmt.Println(resource.Url)
+	}
 }

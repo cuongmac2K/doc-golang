@@ -2,26 +2,52 @@ package main
 
 import (
 	"bytes"
-	"doc-golang/nhap/logger"
 	"encoding/json"
 	"fmt"
-	"github.com/getsentry/sentry-go"
-	"github.com/google/uuid"
 	"io/ioutil"
 	"net/http"
 	"regexp"
+	"sort"
 	"strings"
-	"time"
 )
 
 func main() {
-	a := time.Now()
-	b := getValueResouce("https://hn-staging2.bizflycloud.vn/api/iaas-cloud/volume-types",
+
+	//b := getValueResouce("https://hn-staging2.bizflycloud.vn/api/iaas-cloud//servers/6034cd4b-73ca-4193-aff8-6b5722bd8a71",
+	//	"GET", "98f5e866-ce84-41d8-b09c-d883a86e96c0")
+	//b := getValueResouce("https://hn-staging2.bizflycloud.vn/api/iaas-cloud/volume-types",
+	//	"GET", "98f5e866-ce84-41d8-b09c-d883a86e96c0")
+
+	//b := getValueResouce("https://hn-staging2.bizflycloud.vn/api/kubernetes-engine/_/b8zdr8k5u4d8vbhx",
+	//	"GET", "30f25e75-34c1-4ab8-80cc-0360dab126ba")
+
+	//b := getValueResouce("https://hn-staging2.bizflycloud.vn/api/iaas-cloud//servers/da311a20-cace-41d0-ab7d-8b1aace74c7e",
+	//	"GET", "98f5e866-ce84-41d8-b09c-d883a86e96c0")
+
+	//b := getValueResouce("https://hn-staging2.bizflycloud.vn/api/auto-scaling/groups/591bbb04-9547-4412-afbb-eb8497067fc3",
+	//	"DELETE", "1ee941ad-d7f5-4f00-8d51-42d29a6515dc")
+
+	//b := getValueResouce("https://hn-staging2.bizflycloud.vn/api/kubernetes-engine/_/m9mndvhbq3zacdvn",
+	//	"DELETE", "30f25e75-34c1-4ab8-80cc-0360dab126ba")
+
+	//b := getValueResouce("https://hn-staging2.bizflycloud.vn/api/cloud-database/instances/289991bd-d5ba-458c-9e78-ad2975abc405",
+	//	"DELETE", "a22f7b8c-037c-4ec9-86c8-f32f16546a80")
+
+	//b := getValueResouce("https://hn-staging2.bizflycloud.vn/api/iaas-cloud/vpc-networks/24781ad2-3c66-48da-8191-4c1739220971",
+	//	"DELETE", "98f5e866-ce84-41d8-b09c-d883a86e96c0")
+
+	b := getValueResouce("https://hn-staging2.bizflycloud.vn/api/iaas-cloud/keypairs/string_id_123ggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg",
 		"GET", "98f5e866-ce84-41d8-b09c-d883a86e96c0")
-	//b := getValueResouce("https://hn-staging2.bizflycloud.vn/api/kubernetes-engine/_/b8sm4tbo4lg2frb2", "Get")
-	//b := getValueResouce("https://staging.bizflycloud.vn/api/al/visualize/explore/b0120bb8-ae50-4cbd-aab7-65835ec0fbd2?schemaVersion=1&panes=%20%20%20%20%20%20%7B%22mig%22:%7B%22datasource%22:%22f9301251-dd7e-4509-84b4-b1e2809e52b7%22,%22queries%22:%5B%7B%22refId%22:%22A%22,%22expr%22:%22%7B%20%20%20%20%20%20project_uuid%3D%5C%22b0120bb8-ae50-4cbd-aab7-65835ec0fbd2%5C%22%7D%20%7C%3D%20%60%60%22,%22queryType%22:%22range%22,%22datasource%22:%7B%22type%22:%22loki%22,%22uid%22:%22f9301251-dd7e-4509-84b4-b1e2809e52b7%22%7D,%22editorMode%22:%22builder%22%7D%5D,%22range%22:%7B%22from%22:%22now-1h%22,%22to%22:%22now%22%7D%7D%7D&orgId=1", "Get")
-	fmt.Println(b)
-	fmt.Println(time.Since(a))
+
+	//b := getValueResouce("https://hn-staging2.bizflycloud.vn/api/iaas-cloud/firewalls/2a0ce5b9-b05b-4741-a547-68eaa8d738dd",
+	//	"GET", "98f5e866-ce84-41d8-b09c-d883a86e96c0")
+
+	//b := getValueResouce(" https://hn-staging2.bizflycloud.vn/api/iaas-cloud/firewalls/2a0ce5b9-b05b-4741-a547-68eaa8d738dd",
+	//	"Get", "98f5e866-ce84-41d8-b09c-d883a86e96c0")
+	//b := getValueResouce("https://staging.bizflycloud.vn/api/al/visualize/explore/b0120bb8-ae50-4cbd-aab7-65835ec0fbd2?schemaVersion=1&panes=%20%20%20%20%20%20%7B%22mig%22:%7B%22datasource%22:%22f9301251-dd7e-4509-84b4-b1e2809e52b7%22,%22queries%22:%5B%7B%22refId%22:%22A%22,%22expr%22:%22%7B%20%20%20%20%20%20project_uuid%3D%5C%22b0120bb8-ae50-4cbd-aab7-65835ec0fbd2%5C%22%7D%20%7C%3D%20%60%60%22,%22queryType%22:%22range%22,%22datasource%22:%7B%22type%22:%22loki%22,%22uid%22:%22f9301251-dd7e-4509-84b4-b1e2809e52b7%22%7D,%22editorMode%22:%22builder%22%7D%5D,%22range%22:%7B%22from%22:%22now-1h%22,%22to%22:%22now%22%7D%7D%7D&orgId=1",
+	//	"Get", "5338a9b6-7cd2-4b55-a2ff-aba26dea283e")
+	fmt.Println("endpoint la: ", b)
+
 }
 func getValueResouce(resource string, method, service string) string {
 	url := fmt.Sprintf("%s/admin/resources?%s%s", "https://staging.bizflycloud.vn/api/iam/v2", "service_uuid=", service)
@@ -41,72 +67,119 @@ func getValueResouce(resource string, method, service string) string {
 	if err != nil {
 		fmt.Println("err 2 ", err)
 	}
-	for _, v := range res1 {
-		if strings.ToUpper(v.Type) == strings.ToUpper(method) {
-			if len(v.Patterns) == 1 {
-				s := resource
-				switch {
-				case v.Patterns[0] == "[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}":
-					re := regexp.MustCompile(v.Patterns[0])
+	// sap xep mang dataResource theo url để check trường hợp url dài trước nếu ko thì các kết quả endpoint trả ra đều là kết quả của url ngắn
+	sortDataResourcesByUrlLength(res1)
 
-					// Thay thế tất cả các chuỗi khớp với regex bằng dấu *
-					result := re.ReplaceAllString(s, "*")
-					//fmt.Println("reslut sau khi thay *: ", result)
-
-					if strings.Contains(result, v.Url) {
+	if service == "98f5e866-ce84-41d8-b09c-d883a86e96c0" {
+		for _, v := range res1 {
+			if strings.ToUpper(v.Type) == strings.ToUpper(method) {
+				if len(v.Patterns) == 0 {
+					if strings.Contains(resource, v.Url) {
 						//return v.Endpoint
-						fmt.Println("url ", v.Url)
-						fmt.Println("enpoint ", v.Endpoint)
-						//fmt.Println("record ", v)
-						return v.Endpoint
-						//break
-					}
-					break
-				case strings.Contains(v.Patterns[0], "(.*?)"):
-					if checkPattern(v.Patterns[0], resource) {
+						fmt.Println(" out url ", v.Url)
+						fmt.Println("out record ", v)
 						return v.Endpoint
 					}
-					break
-				case v.Patterns[0] == "(?!\\/.)[A-Za-z0-9_.@]{1,255}$":
-				default:
+				} else {
+					resouceCheck := resource
+					// Biên dịch các biểu thức chính quy
+					var regexps []*regexp.Regexp
+					for _, pattern := range v.Patterns {
+						if pattern == "(?!\\/.)[A-Za-z0-9-_.@]{1,255}$" || pattern == "(?!\\/.)[A-Za-z0-9_.@]{1,255}$" {
+							continue
+						}
 
+						regexps = append(regexps, regexp.MustCompile(pattern))
+					}
+					//originalURL := resouceCheck
+					for _, re := range regexps {
+						switch {
+						case strings.Contains(re.String(), "(.*?)"):
+							stringsRe := strings.Replace(re.String(), "(.*?)", "*", 1)
+							resouceCheck = re.ReplaceAllString(resouceCheck, stringsRe)
+						default:
+							parts := strings.Split(resouceCheck, "/")
+							for i, part := range parts {
+								if re.MatchString(part) {
+									parts[i] = "*"
+									break
+								}
+							}
+							resouceCheck = strings.Join(parts, "/")
+						}
+					}
+
+					if strings.Contains(resouceCheck, v.Url) {
+						//return v.Endpoint
+						fmt.Println(" out url ", v.Url)
+						fmt.Println("out record ", v)
+						return v.Endpoint
+					}
+					// check case patterns is (?!\/.)[A-Za-z0-9_.@]{1,255}$
+					resouceCheckKeyPairs, check := CheckPatternKeyPairs(url)
+					if check {
+						if strings.Contains(resouceCheckKeyPairs, v.Url) {
+							//return v.Endpoint
+							fmt.Println(" out url ", v.Url)
+							fmt.Println("out record ", v)
+							return v.Endpoint
+						}
+					}
+				}
+			}
+		}
+	} else {
+		for _, v := range res1 {
+			if strings.ToUpper(v.Type) == strings.ToUpper(method) {
+				if len(v.Patterns) == 0 {
+					if strings.Contains(resource, v.Url) {
+						//return v.Endpoint
+						fmt.Println(" out url ", v.Url)
+						fmt.Println("out record ", v)
+					}
+				} else {
+					// Biên dịch các biểu thức chính quy
+					var regexps []*regexp.Regexp
+					for _, pattern := range v.Patterns {
+						regexps = append(regexps, regexp.MustCompile(pattern))
+					}
+					resouceCheck := resource
+					for _, re := range regexps {
+						switch {
+						case strings.Contains(re.String(), "(.*?)"):
+							// Thay thế toàn bộ phần khớp nếu mẫu là namespaces/(.*?)/directories
+							stringsRe := strings.Replace(re.String(), "(.*?)", "*", 1)
+							resouceCheck = re.ReplaceAllString(resouceCheck, stringsRe)
+						default:
+							parts := strings.Split(resouceCheck, "/")
+							for i, part := range parts {
+								if re.MatchString(part) {
+									parts[i] = "*"
+									break
+								}
+							}
+							resouceCheck = strings.Join(parts, "/")
+						}
+					}
+					if strings.Contains(resouceCheck, v.Url) {
+						//return v.Endpoint
+						fmt.Println(" out url ", v.Url)
+						fmt.Println("out record ", v)
+						return v.Endpoint
+					}
 				}
 
 			}
 		}
-		if len(v.Patterns) == 0 {
-			if strings.Contains(resource, v.Url) {
-				//return v.Endpoint
-				fmt.Println(" out url ", v.Url)
-				fmt.Println("out record ", v)
-			}
-		}
-		if len(v.Patterns) > 1 {
-			for _, i := range v.Patterns {
-				if
-			}
-		}
-
 	}
-	return ""
-}
-
-func checkPattern(pattern, resource string) bool {
-	pattern += ".*" + pattern
-	re := regexp.MustCompile(pattern)
-	if re.MatchString(resource) {
-		return true
-	} else {
-		return false
-	}
+	return resource
 }
 
 type dataResource struct {
-	Patterns    []string `json:"patterns"`
-	Type        string   `json:"type"`
-	Endpoint    string   `json:"endpoint"`
-	Description string   `json:"description"`
-	Url         string   `json:"url"`
+	Patterns []string `json:"patterns"`
+	Type     string   `json:"type"`
+	Endpoint string   `json:"endpoint"`
+	Url      string   `json:"url"`
 }
 
 func CallAPI(method, url string, bodyJSON []byte) ([]byte, error) {
@@ -134,34 +207,33 @@ func CallAPI(method, url string, bodyJSON []byte) ([]byte, error) {
 	}
 	return body, nil
 }
-func getValueProject(project_uuid string) string {
-	url := fmt.Sprintf("%s/admin/project/owner_info?project_id=%s", "https://staging.bizflycloud.vn/api/iam/v2", project_uuid)
-	body, err := CallAPI("GET", url, nil)
-	if err != nil {
-		logger.Debugf("err call get nameProject: %v", err)
-		sentry.CaptureException(err)
-		return ""
+func CheckPatternKeyPairs(url string) (string, bool) {
+	if !strings.Contains(url, "/keypairs/") {
+		return "", false
 	}
-	res := IAMGetOwnerInfoResponse{}
-	err = json.Unmarshal(body, &res)
-	if err != nil {
-		logger.Debugf("err unmarshal value get nameProject: %v", err)
-		sentry.CaptureException(err)
-		return ""
+	// Định nghĩa regex pattern
+	pattern := `^[A-Za-z0-9_.@]{1,255}$`
+	re := regexp.MustCompile(pattern)
+
+	// Tìm vị trí cuối cùng của dấu "/"
+	lastSlashIndex := strings.LastIndex(url, "/")
+
+	if lastSlashIndex != -1 {
+		// Tách phần cuối cùng của URL
+		lastPart := url[lastSlashIndex+1:]
+
+		// Kiểm tra nếu phần cuối không bắt đầu với "/"
+		if !strings.HasPrefix(lastPart, "/") && re.MatchString(lastPart) {
+			// Thay thế phần cuối bằng "*"
+			url = url[:lastSlashIndex+1] + "*"
+		}
 	}
-	return res.Data.ProjectDetail.AliasName
+	return url, true
 }
 
-type IAMGetOwnerInfoResponse struct {
-	Success   bool   `json:"success"`
-	Message   string `json:"message"`
-	ErrorCode int    `json:"error_code"`
-	Data      struct {
-		UUID          uuid.UUID     `json:"uuid"`
-		Email         string        `json:"email"`
-		ProjectDetail projectDetail `json:"project_detail"`
-	} `json:"data"`
-}
-type projectDetail struct {
-	AliasName string `json:"alias_name"`
+// Hàm để sắp xếp mảng dataResource dựa trên độ dài của Url
+func sortDataResourcesByUrlLength(resources []dataResource) {
+	sort.Slice(resources, func(i, j int) bool {
+		return len(resources[i].Url) > len(resources[j].Url)
+	})
 }
