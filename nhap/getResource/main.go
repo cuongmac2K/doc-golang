@@ -27,8 +27,8 @@ func main() {
 	//b := getValueResouce("https://hn-staging2.bizflycloud.vn/api/auto-scaling/groups/591bbb04-9547-4412-afbb-eb8497067fc3",
 	//	"DELETE", "1ee941ad-d7f5-4f00-8d51-42d29a6515dc")
 
-	//b := getValueResouce("https://hn-staging2.bizflycloud.vn/api/kubernetes-engine/_/m9mndvhbq3zacdvn",
-	//	"DELETE", "30f25e75-34c1-4ab8-80cc-0360dab126ba")
+	/*	b := getValueResouce("https://hn-staging2.bizflycloud.vn/api/kubernetes-engine/_/m9mndvhbq3zacdvn",
+		"DELETE", "30f25e75-34c1-4ab8-80cc-0360dab126ba")*/
 
 	//b := getValueResouce("https://hn-staging2.bizflycloud.vn/api/cloud-database/instances/289991bd-d5ba-458c-9e78-ad2975abc405",
 	//	"DELETE", "a22f7b8c-037c-4ec9-86c8-f32f16546a80")
@@ -36,8 +36,20 @@ func main() {
 	//b := getValueResouce("https://hn-staging2.bizflycloud.vn/api/iaas-cloud/vpc-networks/24781ad2-3c66-48da-8191-4c1739220971",
 	//	"DELETE", "98f5e866-ce84-41d8-b09c-d883a86e96c0")
 
-	b := getValueResouce("https://hn-staging2.bizflycloud.vn/api/iaas-cloud/keypairs/string_id_123ggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg",
-		"GET", "98f5e866-ce84-41d8-b09c-d883a86e96c0")
+	//b := getValueResouce("https://hn-staging2.bizflycloud.vn/api/iaas-cloud/keypairs/string_id_123ggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg",
+	//	"GET", "98f5e866-ce84-41d8-b09c-d883a86e96c0")
+
+	//b := getValueResouce("https://hn-staging2.bizflycloud.vn/api/iaas-cloud/keypairs",
+	//	"GET", "98f5e866-ce84-41d8-b09c-d883a86e96c0")
+
+	//b := getValueResouce("https://hn-staging2.bizflycloud.vn/api/domains/123e4567-e89b-42d3-a456-426614174000/namespaces/abjjc/get-capacity",
+	//	"GET", "e733e886-0f8e-4929-82a7-a966d8189266")
+
+	//b := getValueResouce("https://hn-staging2.bizflycloud.vn/api/_/abcd1234efgh5678/0123456789ABCDEFabcdef012345/123e4567-e89b-42d3-a456-426614174000",
+	//	"GET", "30f25e75-34c1-4ab8-80cc-0360dab126ba")
+	//
+	b := getValueResouce("https://hn-staging2.bizflycloud.vn/api/kubernetes-engine/_/xvl083ux4ngewibb",
+		"GET", "30f25e75-34c1-4ab8-80cc-0360dab126ba")
 
 	//b := getValueResouce("https://hn-staging2.bizflycloud.vn/api/iaas-cloud/firewalls/2a0ce5b9-b05b-4741-a547-68eaa8d738dd",
 	//	"GET", "98f5e866-ce84-41d8-b09c-d883a86e96c0")
@@ -50,6 +62,12 @@ func main() {
 
 }
 func getValueResouce(resource string, method, service string) string {
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Println("Recovered from panic:", r)
+		}
+	}()
+
 	url := fmt.Sprintf("%s/admin/resources?%s%s", "https://staging.bizflycloud.vn/api/iam/v2", "service_uuid=", service)
 	body, err := CallAPI("GET", url, nil)
 	if err != nil {
@@ -82,7 +100,6 @@ func getValueResouce(resource string, method, service string) string {
 					}
 				} else {
 					resouceCheck := resource
-					// Biên dịch các biểu thức chính quy
 					var regexps []*regexp.Regexp
 					for _, pattern := range v.Patterns {
 						if pattern == "(?!\\/.)[A-Za-z0-9-_.@]{1,255}$" || pattern == "(?!\\/.)[A-Za-z0-9_.@]{1,255}$" {
@@ -91,7 +108,6 @@ func getValueResouce(resource string, method, service string) string {
 
 						regexps = append(regexps, regexp.MustCompile(pattern))
 					}
-					//originalURL := resouceCheck
 					for _, re := range regexps {
 						switch {
 						case strings.Contains(re.String(), "(.*?)"):
@@ -116,7 +132,7 @@ func getValueResouce(resource string, method, service string) string {
 						return v.Endpoint
 					}
 					// check case patterns is (?!\/.)[A-Za-z0-9_.@]{1,255}$
-					resouceCheckKeyPairs, check := CheckPatternKeyPairs(url)
+					resouceCheckKeyPairs, check := CheckPatternKeyPairs(resource)
 					if check {
 						if strings.Contains(resouceCheckKeyPairs, v.Url) {
 							//return v.Endpoint
@@ -211,9 +227,15 @@ func CheckPatternKeyPairs(url string) (string, bool) {
 	if !strings.Contains(url, "/keypairs/") {
 		return "", false
 	}
-	// Định nghĩa regex pattern
-	pattern := `^[A-Za-z0-9_.@]{1,255}$`
-	re := regexp.MustCompile(pattern)
+	// vì trong bảng resource_mapping có 2 record đều có url keypairs nên phải check 2 patterns
+
+	// Định nghĩa regex pattern thứ nhất
+	pattern1 := `^[A-Za-z0-9_.@]{1,255}$`
+	re1 := regexp.MustCompile(pattern1)
+
+	// Định nghĩa regex pattern thứ hai
+	pattern2 := `^[A-Za-z0-9-_.@]{1,255}$`
+	re2 := regexp.MustCompile(pattern2)
 
 	// Tìm vị trí cuối cùng của dấu "/"
 	lastSlashIndex := strings.LastIndex(url, "/")
@@ -223,11 +245,12 @@ func CheckPatternKeyPairs(url string) (string, bool) {
 		lastPart := url[lastSlashIndex+1:]
 
 		// Kiểm tra nếu phần cuối không bắt đầu với "/"
-		if !strings.HasPrefix(lastPart, "/") && re.MatchString(lastPart) {
+		if !strings.HasPrefix(lastPart, "/") && (re1.MatchString(lastPart) || re2.MatchString(lastPart)) {
 			// Thay thế phần cuối bằng "*"
 			url = url[:lastSlashIndex+1] + "*"
 		}
 	}
+
 	return url, true
 }
 

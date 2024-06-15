@@ -33,9 +33,8 @@ func sendLog(message map[string]interface{}) {
 	}
 	defer conn.Close()
 	logData := map[string]interface{}{
-		"message":              message,
+		"log":                  message,
 		"decrypt_data_service": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjYXRlZ29yeSI6IkFVRElUTE9HIiwiZW1haWwiOiJjdW9uZ21hYzJrQG1haWwuY29tIiwibmFtZSI6ImFnZW50IDU1NTU1NTU1NTU1NTU1NTU1IiwidG9rZW5faW5fd29ya2VyIjoiOWE2NDMyZTAtOGRkZi00NmFkLTlmY2MtYjg4ZWM4ODhkM2RiIn0.FBH9JDxdCRBBFsi8prZJSDj5L1wCH4Ca7K1ZrQ_M2bA",
-		"secret":               "abc",
 	}
 	jsonData, err := json.Marshal(logData)
 	if err != nil {
